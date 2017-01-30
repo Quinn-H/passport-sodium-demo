@@ -60,4 +60,19 @@ function registerFail (req, res) {
   res.redirect('/register')
 }
 
+router.get('/auth/facebook', passport.authenticate('facebook'))
+
+router.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: './login' }),
+    (req, res) => {
+      res.redirect('/')
+    })
+
+router.get('/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function (req, res) {
+    res.render('profile', { user: req.user })
+  }
+  )
+
 module.exports = router

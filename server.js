@@ -2,7 +2,9 @@ const express = require('express')
 const flash = require('connect-flash')
 const hbs = require('express-handlebars')
 const LocalStrategy = require('passport-local')
+const FacebookStrategy = require('passport-facebook')
 const passport = require('passport')
+
 const path = require('path')
 
 const auth = require('./lib/auth')
@@ -28,8 +30,8 @@ app.use('/', indexRoutes)
 app.use('/api/', apiRoutes)
 
 passport.use(new LocalStrategy(auth.verify))
+passport.use(new FacebookStrategy(auth.facebookOptions, auth.facebookVerify))
 passport.serializeUser(users.serialize)
 passport.deserializeUser(users.deserialize)
 
 module.exports = app
-
